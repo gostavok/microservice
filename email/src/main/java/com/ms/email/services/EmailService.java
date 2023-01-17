@@ -1,8 +1,12 @@
 package com.ms.email.services;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -46,6 +50,14 @@ public class EmailService {
 		message.setSubject(emailModel.getSubject());
 		message.setText(emailModel.getText());
 		return message;
+	}
+
+	public Page<EmailModel> consultarEmails(PageRequest pageable) {
+		return emailRepository.findAll(pageable);
+	}
+
+	public Optional<EmailModel> consultarEmailPorId(UUID id) {
+		return emailRepository.findById(id);
 	}
 	
 }

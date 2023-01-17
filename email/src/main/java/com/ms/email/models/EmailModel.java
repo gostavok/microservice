@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import com.ms.email.enums.StatusEmail;
 
 import jakarta.persistence.Column;
@@ -17,7 +19,7 @@ import lombok.Data;
 @Entity
 @Data
 @Table(name = "TB_EMAIL")
-public class EmailModel implements Serializable{
+public class EmailModel extends RepresentationModel<EmailModel> implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
