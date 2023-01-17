@@ -8,8 +8,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.hateoas.Link;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,7 +37,7 @@ public class EmailController {
 		EmailModel emailModel = new EmailModel();
 		BeanUtils.copyProperties(emailDTO, emailModel);
 		emailService.sendEmail(emailModel);
-		emailModel.add(linkTo(methodOn(EmailController.class, emailModel).consultarEmail(emailModel.getEmailId())).withRel("Listar detalhes"));
+		emailModel.add(linkTo(methodOn(EmailController.class).consultarEmails(null,null)).withRel("Listar emails"));
 		return new ResponseEntity<>(emailModel, HttpStatus.CREATED);
 	}
 	
@@ -50,7 +48,7 @@ public class EmailController {
 		Page<EmailModel> emailPaginado = emailService.consultarEmails(PageRequest.of(page, size));
 		
 		emailPaginado.getContent().forEach(email -> 
-								email.add(linkTo(methodOn(EmailController.class, email)
+								email.add(linkTo(methodOn(EmailController.class)
 								.consultarEmail(email.getEmailId()))
 								.withRel("Listar detalhes")));
 		return new ResponseEntity<Page<EmailModel>>(emailPaginado, HttpStatus.OK);
